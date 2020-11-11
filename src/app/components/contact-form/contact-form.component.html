@@ -1,0 +1,21 @@
+<form [formGroup]="contactForm" (ngSubmit)="saveContact($event)">
+  <input type="text" formControlName="name">
+  <span *ngIf="contactForm.controls.name.errors?.required">{{ contactForm.controls.name.errors.required }}</span>
+  <input type="date" formControlName="birthday" (ngModelChange)="calculateAge()">
+  <span *ngIf="contactForm.controls.age.value">Edad: {{ contactForm.controls.age.value }}</span>
+  <div class="phones" formArrayName="phones"
+       *ngFor="let phone of items.controls; let i = index;"
+  >
+    <div [formGroupName]="i">
+      <input type="text" formControlName="phone">
+      <select formControlName="type">
+        <option *ngFor="let phoneType of phoneTypes; let j = index;" value="j">
+          {{ phoneType }}
+        </option>
+      </select>
+      <input type="checkbox" formControlName="main" (ngModelChange)="validateMain(i)">
+    </div>
+  </div>
+  <button (click)="addPhone()">Add Phone</button>
+  <button type="submit">Submit</button>
+</form>
